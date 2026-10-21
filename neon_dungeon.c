@@ -20,8 +20,16 @@ void Menu(){
     printf("3.Exit\n");
     printf("Enter your choice:");
 }
+void viewMap(char map[6][8]){
+    for(int i=0;i<6;i++){
+        for(int j=0;j<8;j++){
+            printf("%c",map[i][j]);
+        }
+        printf("\n");
+    }
+}
 void Stats(){
-    printf("PLAYER STATISTICS\n");
+    printf("\nPLAYER STATISTICS\n");
     printf("Health:%d\n",player.health);
     printf("Gold:%d\n",player.gold);
     printf("Keys:%d\n",player.keys);
@@ -38,6 +46,14 @@ void Guide(){
 }
 int main(){
     int choice;
+    char map[6][8] = {
+        {'#', '#', '#', '#', '#', '#', '#', '#'},
+        {'#', '@', '.', '.', '$', '.', '.', '#'},
+        {'#', '.', '#', '.', '#', '#', '.', '#'},
+        {'#', '.', '.', '.', 'E', '.', '.', '#'},
+        {'#', '#', '#', '.', '#', '.', 'X', '#'},
+        {'#', '#', '#', '#', '#', '#', '#', '#'}
+    };
     player.health=100;
     player.gold=0;
     player.keys=0;
@@ -49,6 +65,7 @@ int main(){
         switch (choice)
         {
             case 1:
+                viewMap(map);
                 Stats();
                 break;
             case 2:
@@ -58,6 +75,7 @@ int main(){
                 printf("Bye!!! Thank you for coming.");
                 return 0;
             default:
+                printf("Invalid Choice");
                 break;
         }
     }
