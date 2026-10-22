@@ -176,6 +176,13 @@
                         map[p.row][p.column]='.';   
                     }
                 }
+                else if (map[p.row-1][p.column]=='K')
+                {
+                    player.keys+=1;
+                    p.row-=1;
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.row-=1;
                 break;
@@ -200,6 +207,13 @@
                         p.row+=1;
                         map[p.row][p.column]='.';   
                     }
+                }
+                else if (map[p.row+1][p.column]=='K')
+                {
+                    player.keys+=1;
+                    p.row+=1;
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    map[p.row][p.column]='.';
                 }
                 else
                     p.row+=1;
@@ -226,6 +240,13 @@
                         map[p.row][p.column]='.';   
                     }
                 }
+                else if (map[p.row][p.column-1]=='K')
+                {
+                    player.keys+=1;
+                    p.column-=1;
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.column-=1;
                 break;
@@ -251,6 +272,13 @@
                         map[p.row][p.column]='.';   
                     }
                 }
+                else if (map[p.row][p.column+1]=='K')
+                {
+                    player.keys+=1;
+                    p.column+=1;
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.column+=1;
                 break;
@@ -270,7 +298,7 @@
         char map[6][8] = {
             {'#', '#', '#', '#', '#', '#', '#', '#'},
             {'#', '.', '.', '.', '$', '.', '.', '#'},
-            {'#', '.', '#', '.', '#', '#', '.', '#'},
+            {'#', '.', '#', '.', '#', '#', 'K', '#'},
             {'#', '.', '.', '.', 'E', '.', '.', '#'},
             {'#', '#', '#', '.', '#', '.', 'X', '#'},
             {'#', '#', '#', '#', '#', '#', '#', '#'}
