@@ -20,14 +20,15 @@
     struct Player player;
     struct Position p;
     struct Enemy enemy;
+    int retreat=0;
     void Menu();
     void viewMap(char map[6][8]);
     void Stats();
     void Guide();
     void playerPos(char map[6][8],char posplayer[6][8]);
     void viewPlayerposition(char posplayer[6][8]);
-    int combat();
-    int enemyEncounter();
+    void combat();
+    void enemyEncounter();
     int movement(char posplayer[6][8],char map[6][8]);
 
     void Menu(){
@@ -84,42 +85,25 @@
             printf("\n");
         }   
     }
-    int combat(){
-        int victory=0;
-        int defeat=0;
+    void combat(){
         printf("========================================\n               COMBAT\n========================================\n\nYou attacked the enemy!\n");
-        while (1)
-        {
             enemy.health=enemy.health-player.damage;
             if(enemy.health<=0){
                 enemy.health=0;
-                victory=1;
-                break;}
+            }
             printf("Enemy received damage: %d\n",player.damage);
             printf("Enemy health: %d\n",enemy.health);
             printf("\n");
+            if(enemy.health!=0){
             printf("The enemy retaliates!\n\n");
             player.health=player.health-enemy.damage;
             if(player.health<=0){
-                defeat=1;
                 player.health=0;
-                break;}
+            }
             printf("Your Health:%d\n",player.health);
-            enemyEncounter();
-        }
-        if (victory){
-            printf("========================================\n             ENEMY DEFEATED!\n========================================\n\nYou defeated the enemy!");
-            printf("\nRemaining health: %d\n",player.health);
-        }
-        if(defeat){
-            printf("========================================\n               GAME OVER\n========================================\n\nYou were defeated in the dungeon.\n");
-            printf("Gold Collected:%d\n",player.gold);
-            printf("Health:%d\n\n",player.health);
-            printf("Better luck next time!");
-            exit(0);
-        }
+            }
     }
-    int enemyEncounter(){
+    void enemyEncounter(){
         int option;
                     while (1)
                     {
@@ -131,20 +115,33 @@
                         {
                             case 1:
                                 combat();
-                                return 0;
-                            case 2:
-                                printf("You retreated from combat!");
                                 break;
+                            case 2:
+                                printf("You retreated from combat!\n");
+                                printf("Your Health:%d",player.health);
+                                retreat=1;
+                                return;
                             default:
                                 printf("Invalid choice!");
                                 break;
+                        }
+                        if (enemy.health==0){
+                            printf("========================================\n             ENEMY DEFEATED!\n========================================\n\nYou defeated the enemy!");
+                            printf("\nRemaining health: %d\n",player.health);
+                            break;
+                        }
+                        if(player.health==0){
+                            printf("========================================\n               GAME OVER\n========================================\n\nYou were defeated in the dungeon.\n");
+                            printf("Gold Collected:%d\n",player.gold);
+                            printf("Health:%d\n\n",player.health);
+                            printf("Better luck next time!");
+                            exit(0);
                         }
                     }
                     
     }
     int movement(char posplayer[6][8],char map[6][8]){
         char key;
-        int option;
         while (1)
         {
             playerPos(map,posplayer);
@@ -174,8 +171,10 @@
                     printf("\nYour Health:%d\n",player.health);
                     printf("Enemy Health:%d\n",enemy.health);
                     enemyEncounter();
-                    p.row-=1;
-                    map[p.row][p.column]='.';
+                    if(!retreat){
+                        p.row-=1;
+                        map[p.row][p.column]='.';   
+                    }
                 }
                 else
                     p.row-=1;
@@ -197,8 +196,10 @@
                     printf("\nYour Health:%d\n",player.health);
                     printf("Enemy Health:%d\n",enemy.health);
                     enemyEncounter();
-                    p.row+=1;
-                    map[p.row][p.column]='.';
+                    if(!retreat){
+                        p.row+=1;
+                        map[p.row][p.column]='.';   
+                    }
                 }
                 else
                     p.row+=1;
@@ -220,8 +221,10 @@
                     printf("\nYour Health:%d\n",player.health);
                     printf("Enemy Health:%d\n",enemy.health);
                     enemyEncounter();
-                    p.column-=1;
-                    map[p.row][p.column]='.';
+                    if(!retreat){
+                        p.column-=1;
+                        map[p.row][p.column]='.';   
+                    }
                 }
                 else
                     p.column-=1;
@@ -243,8 +246,10 @@
                     printf("\nYour Health:%d\n",player.health);
                     printf("Enemy Health:%d\n",enemy.health);
                     enemyEncounter();
-                    p.column+=1;
-                    map[p.row][p.column]='.';
+                    if(!retreat){
+                        p.column+=1;
+                        map[p.row][p.column]='.';   
+                    }
                 }
                 else
                     p.column+=1;
@@ -256,6 +261,7 @@
                 printf("Invalid Choice");
                 break;
             }
+            retreat=0;
         }
         
     }
@@ -272,7 +278,7 @@
         char posplayer[6][8];
         p.row=1;
         p.column=1;
-        player.health=10;
+        player.health=100;
         player.gold=0;
         player.keys=0;
         player.damage=20;
