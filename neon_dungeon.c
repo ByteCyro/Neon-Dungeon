@@ -1,17 +1,35 @@
     #include <stdio.h>
+    #include <stdlib.h>
     struct Player
     {
         int health;
         int keys;
         int gold;
+        int damage;
     };
     struct Position
     {
         int row;
         int column;
     };
+    struct Enemy
+    {
+        int health;
+        int damage;
+    };
     struct Player player;
     struct Position p;
+    struct Enemy enemy;
+    void Menu();
+    void viewMap(char map[6][8]);
+    void Stats();
+    void Guide();
+    void playerPos(char map[6][8],char posplayer[6][8]);
+    void viewPlayerposition(char posplayer[6][8]);
+    int combat();
+    int enemyEncounter();
+    int movement(char posplayer[6][8],char map[6][8]);
+
     void Menu(){
         printf("\n=============================\n");
         printf("        Neon Dungeon\n");
@@ -66,8 +84,67 @@
             printf("\n");
         }   
     }
+    int combat(){
+        int victory=0;
+        int defeat=0;
+        printf("========================================\n               COMBAT\n========================================\n\nYou attacked the enemy!\n");
+        while (1)
+        {
+            enemy.health=enemy.health-player.damage;
+            if(enemy.health<=0){
+                enemy.health=0;
+                victory=1;
+                break;}
+            printf("Enemy received damage: %d\n",player.damage);
+            printf("Enemy health: %d\n",enemy.health);
+            printf("\n");
+            printf("The enemy retaliates!\n\n");
+            player.health=player.health-enemy.damage;
+            if(player.health<=0){
+                defeat=1;
+                player.health=0;
+                break;}
+            printf("Your Health:%d\n",player.health);
+            enemyEncounter();
+        }
+        if (victory){
+            printf("========================================\n             ENEMY DEFEATED!\n========================================\n\nYou defeated the enemy!");
+            printf("\nRemaining health: %d\n",player.health);
+        }
+        if(defeat){
+            printf("========================================\n               GAME OVER\n========================================\n\nYou were defeated in the dungeon.\n");
+            printf("Gold Collected:%d\n",player.gold);
+            printf("Health:%d\n\n",player.health);
+            printf("Better luck next time!");
+            exit(0);
+        }
+    }
+    int enemyEncounter(){
+        int option;
+                    while (1)
+                    {
+                        printf("\n1.Attack");
+                        printf("\n2.Retreat");
+                        printf("\nChoose Your option:");
+                        scanf(" %d",&option);
+                        switch (option)
+                        {
+                            case 1:
+                                combat();
+                                return 0;
+                            case 2:
+                                printf("You retreated from combat!");
+                                break;
+                            default:
+                                printf("Invalid choice!");
+                                break;
+                        }
+                    }
+                    
+    }
     int movement(char posplayer[6][8],char map[6][8]){
         char key;
+        int option;
         while (1)
         {
             playerPos(map,posplayer);
@@ -91,6 +168,15 @@
                     map[p.row][p.column]='.';
                     printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
                 }
+                else if (map[p.row-1][p.column]=='E')
+                {   
+                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!");
+                    printf("\nYour Health:%d\n",player.health);
+                    printf("Enemy Health:%d\n",enemy.health);
+                    enemyEncounter();
+                    p.row-=1;
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.row-=1;
                 break;
@@ -104,6 +190,15 @@
                     p.row+=1;
                     map[p.row][p.column]='.';
                     printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                }
+                else if (map[p.row+1][p.column]=='E')
+                {
+                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!");
+                    printf("\nYour Health:%d\n",player.health);
+                    printf("Enemy Health:%d\n",enemy.health);
+                    enemyEncounter();
+                    p.row+=1;
+                    map[p.row][p.column]='.';
                 }
                 else
                     p.row+=1;
@@ -119,6 +214,15 @@
                     map[p.row][p.column]='.';
                     printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
                 }
+                else if (map[p.row][p.column-1]=='E')
+                {
+                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!");
+                    printf("\nYour Health:%d\n",player.health);
+                    printf("Enemy Health:%d\n",enemy.health);
+                    enemyEncounter();
+                    p.column-=1;
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.column-=1;
                 break;
@@ -133,12 +237,21 @@
                     map[p.row][p.column]='.';
                     printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
                 }
+                else if (map[p.row][p.column+1]=='E')
+                {
+                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!");
+                    printf("\nYour Health:%d\n",player.health);
+                    printf("Enemy Health:%d\n",enemy.health);
+                    enemyEncounter();
+                    p.column+=1;
+                    map[p.row][p.column]='.';
+                }
                 else
                     p.column+=1;
                 break;
             case 'q':
             case 'Q':
-                return 0;
+               return 0;
             default:
                 printf("Invalid Choice");
                 break;
@@ -159,9 +272,12 @@
         char posplayer[6][8];
         p.row=1;
         p.column=1;
-        player.health=100;
+        player.health=10;
         player.gold=0;
         player.keys=0;
+        player.damage=20;
+        enemy.damage=10;
+        enemy.health=50;
         while (1)
         {
             Menu();
@@ -177,7 +293,7 @@
                     break;
                 case 3:
                     printf("Bye!!! Thank you for coming.");
-                    return 0;
+                   return 0;
                 default:
                     printf("Invalid Choice");
                     break;
