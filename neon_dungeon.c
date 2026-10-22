@@ -64,7 +64,7 @@
                 printf("%c",posplayer[i][j]);
             }
             printf("\n");
-        }
+        }   
     }
     int movement(char posplayer[6][8],char map[6][8]){
         char key;
@@ -84,6 +84,13 @@
             case 'W':
                 if(map[p.row-1][p.column]=='#')
                     printf("The destination is wall position is not changed\n");
+                else if (map[p.row-1][p.column]=='$')
+                {
+                    player.gold+=25;
+                    p.row-=1;
+                    map[p.row][p.column]='.';
+                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                }
                 else
                     p.row-=1;
                 break;
@@ -91,6 +98,13 @@
             case 'S':
                 if(map[p.row+1][p.column]=='#')
                     printf("The destination is wall position is not changed\n");
+                else if (map[p.row+1][p.column]=='$')
+                {
+                    player.gold+=25;
+                    p.row+=1;
+                    map[p.row][p.column]='.';
+                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                }
                 else
                     p.row+=1;
                 break;
@@ -98,6 +112,13 @@
             case 'A':
                 if(map[p.row][p.column-1]=='#')
                     printf("The destination is wall position is not changed\n");
+                else if (map[p.row][p.column-1]=='$')
+                {
+                    player.gold+=25;
+                    p.column-=1;
+                    map[p.row][p.column]='.';
+                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                }
                 else
                     p.column-=1;
                 break;
@@ -105,6 +126,13 @@
             case 'D':
                 if(map[p.row][p.column+1]=='#')
                     printf("The destination is wall position is not changed\n");
+                else if (map[p.row][p.column+1]=='$')
+                {
+                    player.gold+=25;
+                    p.column+=1;
+                    map[p.row][p.column]='.';
+                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                }
                 else
                     p.column+=1;
                 break;
