@@ -21,6 +21,8 @@
     struct Position p;
     struct Enemy enemy;
     int retreat=0;
+    char posplayer[6][8];
+    char map[6][8];
     void Menu();
     void viewMap(char map[6][8]);
     void Stats();
@@ -30,6 +32,7 @@
     void combat();
     void enemyEncounter();
     int movement(char posplayer[6][8],char map[6][8]);
+    void reset();
 
     void Menu(){
         printf("\n=============================\n");
@@ -54,10 +57,12 @@
         }
     }
     void Stats(){
+        printf("\n========================================");
         printf("\nPLAYER STATISTICS\n");
         printf("Health:%d\n",player.health);
         printf("Gold:%d\n",player.gold);
         printf("Keys:%d\n",player.keys);
+        printf("========================================\n\n");
     }
     void Guide(){
         printf("================ HOW TO PLAY ================\n");
@@ -150,7 +155,8 @@
             printf("Enter S to move down\n");
             printf("Enter A to move left\n");
             printf("Enter D to move right\n");
-            printf("Enter Q to exit to main menu");
+            printf("Enter I to view stats\n");
+            printf("Enter Q to exit to main menu\n");
             scanf(" %c",&key);
             switch (key)
             {
@@ -180,9 +186,25 @@
                 {
                     player.keys+=1;
                     p.row-=1;
-                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d\n",player.keys);
                     map[p.row][p.column]='.';
                 }
+                else if (map[p.row-1][p.column]=='X')
+                {
+                    printf("================================\n          EXIT DISCOVERED!\n================================\n\n");
+                    if(player.keys<=0){
+                        printf("Exit is locked you need a key to escape!\n");
+                    }
+                    else{
+                        printf("========================================\n          DUNGEON COMPLETED!\n=========================================\n\nCongratulations! You escaped the Neon Dungeon!");
+                        printf("\nFinal Statistics:\n");
+                        printf("Health:%d\n",player.health);
+                        printf("Gold Collected:%d\n",player.gold);
+                        printf("Keys Collected:%d\n",player.keys);
+                        printf("\nThanks for playing the dungeon!!!");
+                        exit(0);
+                    }
+                    }
                 else
                     p.row-=1;
                 break;
@@ -214,6 +236,22 @@
                     p.row+=1;
                     printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
                     map[p.row][p.column]='.';
+                }
+                else if (map[p.row+1][p.column]=='X')
+                {
+                    printf("================================\n          EXIT DISCOVERED!\n================================\n\n");
+                    if(player.keys<=0){
+                        printf("Exit is locked you need a key to escape!\n");
+                    }
+                    else{
+                        printf("========================================\n          DUNGEON COMPLETED!\n=========================================\n\nCongratulations! You escaped the Neon Dungeon!");
+                        printf("\nFinal Statistics:\n");
+                        printf("Health:%d\n",player.health);
+                        printf("Gold Collected:%d\n",player.gold);
+                        printf("Keys Collected:%d\n",player.keys);
+                        printf("\nThanks for playing the dungeon!!!");
+                        exit(0);
+                    }
                 }
                 else
                     p.row+=1;
@@ -247,6 +285,22 @@
                     printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
                     map[p.row][p.column]='.';
                 }
+                else if (map[p.row][p.column-1]=='X')
+                {
+                    printf("================================\n          EXIT DISCOVERED!\n================================\n\n");
+                    if(player.keys<=0){
+                        printf("Exit is locked you need a key to escape!\n");
+                    }
+                    else{
+                        printf("========================================\n          DUNGEON COMPLETED!\n=========================================\n\nCongratulations! You escaped the Neon Dungeon!");
+                        printf("\nFinal Statistics:\n");
+                        printf("Health:%d\n",player.health);
+                        printf("Gold Collected:%d\n",player.gold);
+                        printf("Keys Collected:%d\n",player.keys);
+                        printf("\nThanks for playing the dungeon!!!");
+                        exit(0);
+                    } 
+                }
                 else
                     p.column-=1;
                 break;
@@ -259,11 +313,11 @@
                     player.gold+=25;
                     p.column+=1;
                     map[p.row][p.column]='.';
-                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d",player.gold);
+                    printf("================================\n          TREASURE DISCOVERED!\n================================\n\n  You found 25 gold!\n\nYour total gold:%d\n",player.gold);
                 }
                 else if (map[p.row][p.column+1]=='E')
                 {
-                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!");
+                    printf("================================\n         ENEMY ENCOUNTER\n================================\n\nAn enemy blocks your path!\n");
                     printf("\nYour Health:%d\n",player.health);
                     printf("Enemy Health:%d\n",enemy.health);
                     enemyEncounter();
@@ -276,11 +330,31 @@
                 {
                     player.keys+=1;
                     p.column+=1;
-                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d",player.keys);
+                    printf("================================\n          KEY DISCOVERED!\n================================\n\n  You have found a key!\n\nYour total keys:%d\n",player.keys);
                     map[p.row][p.column]='.';
+                }
+                else if (map[p.row][p.column+1]=='X')
+                {
+                    printf("================================\n          EXIT DISCOVERED!\n================================\n\n");
+                    if(player.keys<=0){
+                        printf("Exit is locked you need a key to escape!\n");
+                    }
+                    else{
+                        printf("========================================\n          DUNGEON COMPLETED!\n=========================================\n\nCongratulations! You escaped the Neon Dungeon!");
+                        printf("\nFinal Statistics:\n");
+                        printf("Health:%d\n",player.health);
+                        printf("Gold Collected:%d\n",player.gold);
+                        printf("Keys Collected:%d\n",player.keys);
+                        printf("\nThanks for playing the dungeon!!!");
+                        exit(0);
+                    }
                 }
                 else
                     p.column+=1;
+                break;
+            case 'i':
+            case 'I':
+                Stats();
                 break;
             case 'q':
             case 'Q':
@@ -293,33 +367,35 @@
         }
         
     }
+    void reset(){
+        char map[6][8] = {
+                        {'#', '#', '#', '#', '#', '#', '#', '#'},
+                        {'#', '.', '.', '.', '$', '.', '.', '#'},
+                        {'#', '.', '#', '.', '#', '#', '.', '#'},
+                        {'#', '.', '.', '.', 'E', '.', '.', '#'},
+                        {'#', '#', '#', 'K', '#', '.', 'X', '#'},
+                        {'#', '#', '#', '#', '#', '#', '#', '#'}
+                    };
+                    char posplayer[6][8];
+                    p.row=1;
+                    p.column=1;
+                    player.health=100;
+                    player.gold=0;
+                    player.keys=0;
+                    player.damage=20;
+                    enemy.damage=10;
+                    enemy.health=50;
+    }
     int main(){
         int choice;
-        char map[6][8] = {
-            {'#', '#', '#', '#', '#', '#', '#', '#'},
-            {'#', '.', '.', '.', '$', '.', '.', '#'},
-            {'#', '.', '#', '.', '#', '#', 'K', '#'},
-            {'#', '.', '.', '.', 'E', '.', '.', '#'},
-            {'#', '#', '#', '.', '#', '.', 'X', '#'},
-            {'#', '#', '#', '#', '#', '#', '#', '#'}
-        };
-        char posplayer[6][8];
-        p.row=1;
-        p.column=1;
-        player.health=100;
-        player.gold=0;
-        player.keys=0;
-        player.damage=20;
-        enemy.damage=10;
-        enemy.health=50;
-        while (1)
-        {
+        while(1){
             Menu();
             scanf("%d",&choice);
             printf("\n");
             switch (choice)
             {
                 case 1:
+                    reset();
                     movement(posplayer,map);
                     break;
                 case 2:
