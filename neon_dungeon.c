@@ -21,8 +21,6 @@
     struct Position p;
     struct Enemy enemy;
     int retreat=0;
-    char posplayer[6][8];
-    char map[6][8];
     void Menu();
     void viewMap(char map[6][8]);
     void Stats();
@@ -32,7 +30,7 @@
     void combat();
     void enemyEncounter();
     int movement(char posplayer[6][8],char map[6][8]);
-    void reset();
+    void reset(char map[6][8]);
 
     void Menu(){
         printf("\n=============================\n");
@@ -367,7 +365,32 @@
         }
         
     }
-    void reset(){
+    void reset(char map[6][8]){
+        char originalMap[6][8] = {
+        {'#', '#', '#', '#', '#', '#', '#', '#'},
+        {'#', '.', '.', '.', '$', '.', '.', '#'},
+        {'#', '.', '#', '.', '#', '#', '.', '#'},
+        {'#', '.', '.', '.', 'E', '.', '.', '#'},
+        {'#', '#', '#', 'K', '#', '.', 'X', '#'},
+        {'#', '#', '#', '#', '#', '#', '#', '#'}
+        };
+
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                map[i][j] = originalMap[i][j];
+            }
+        }
+        p.row=1;
+        p.column=1;
+        player.health=100;
+        player.gold=0;
+        player.keys=0;
+        player.damage=20;
+        enemy.damage=10;
+        enemy.health=50;                
+    }
+    int main(){
+        int choice;
         char map[6][8] = {
                         {'#', '#', '#', '#', '#', '#', '#', '#'},
                         {'#', '.', '.', '.', '$', '.', '.', '#'},
@@ -376,18 +399,7 @@
                         {'#', '#', '#', 'K', '#', '.', 'X', '#'},
                         {'#', '#', '#', '#', '#', '#', '#', '#'}
                     };
-                    char posplayer[6][8];
-                    p.row=1;
-                    p.column=1;
-                    player.health=100;
-                    player.gold=0;
-                    player.keys=0;
-                    player.damage=20;
-                    enemy.damage=10;
-                    enemy.health=50;
-    }
-    int main(){
-        int choice;
+        char posplayer[6][8];
         while(1){
             Menu();
             scanf("%d",&choice);
@@ -395,7 +407,7 @@
             switch (choice)
             {
                 case 1:
-                    reset();
+                    reset(map);
                     movement(posplayer,map);
                     break;
                 case 2:
